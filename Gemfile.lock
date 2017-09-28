@@ -1,0 +1,24 @@
+PATH
+  remote: .
+  specs:
+    cryptr (0.1.1)
+      openssl
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    minitest (5.10.3)
+    openssl (2.0.6)
+    rake (10.4.2)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  bundler (~> 1.16.a)
+  cryptr!
+  minitest (~> 5.0)
+  rake (~> 10.0)
+
+BUNDLED WITH
+   1.16.0.pre.2

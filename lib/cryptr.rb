@@ -1,5 +1,7 @@
-require 'cryptr/version'
 require 'base64'
+require 'openssl'
+
+require 'cryptr/version'
 
 # Cryptr is a minimal encryption module that follows the standard of AES-256-CBC
 # A random iv is generated each time and prepended to the encrypted message
@@ -12,9 +14,9 @@ module Cryptr
   def self.encrypt(key, data)
     cipher = OpenSSL::Cipher::Cipher.new(ENCRYPTION_METHOD)
     cipher.encrypt
-    cipher.key = key = Digest::SHA256.digest(key)
+    cipher.key = key = OpenSSL::Digest::SHA256.digest(key)
     random_iv = cipher.random_iv
-    cipher.iv = Digest::SHA256.digest(random_iv + key)[0...IV_LENGTH]
+    cipher.iv = OpenSSL::Digest::SHA256.digest(random_iv + key)[0...IV_LENGTH]
     encrypted = cipher.update(data)
     encrypted << cipher.final
     random_iv + encrypted
@@ -23,10 +25,11 @@ module Cryptr
   def self.decrypt(key, data) # rubocop:disable Metrics/MethodLength
     cipher = OpenSSL::Cipher::Cipher.new(ENCRYPTION_METHOD)
     cipher.decrypt
-    cipher.key = cipher_key = Digest::SHA256.digest(key)
+    cipher.key = cipher_key = OpenSSL::Digest::SHA256.digest(key)
     random_iv = data[0...IV_LENGTH]
     data = data[IV_LENGTH..-1]
-    cipher.iv = Digest::SHA256.digest(random_iv + cipher_key)[0...IV_LENGTH]
+    digest = OpenSSL::Digest::SHA256.digest(random_iv + cipher_key)
+    cipher.iv = digest[0...IV_LENGTH]
     begin
       decrypted = cipher.update(data)
       decrypted << cipher.final
