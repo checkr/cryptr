@@ -46,4 +46,16 @@ module Cryptr
   def self.decrypt64(key, data)
     decrypt(key, Base64.decode64(data))
   end
+
+  # multi_decrypt uses the keys in order to decrypt data
+  # useful for key rotation
+  # WARNING notice that it may decrypt to some arbitrary data using the wrong
+  # key, but it's up to the downstream to validate the correctness of the data
+  def self.multi_decrypt(keys, data)
+    keys.map { |key| decrypt(key, data) }
+  end
+
+  def self.multi_decrypt64(keys, data)
+    keys.map { |key| decrypt64(key, data) }
+  end
 end
