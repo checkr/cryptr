@@ -1,5 +1,8 @@
 require 'base64'
 require 'openssl'
+require 'rbnacl/libsodium'
+require 'rbnacl'
+require 'securerandom'
 
 require 'cryptr/version'
 
@@ -57,5 +60,51 @@ module Cryptr
 
   def self.multi_decrypt64(keys, data)
     keys.map { |key| decrypt64(key, data) }
+  end
+end
+
+# Simplebox https://github.com/cryptosphere/rbnacl/wiki/SimpleBox
+# The RbNaCl::SimpleBox class provides a simple, easy-to-use cryptographic
+# API where all of the hard decisions have been made for you in advance.
+# key must be 32 bytes.
+module SimpleboxCryptr
+  def self.gen_key
+    SecureRandom.base64(24) # the returned key is 32 bytes, 32 * 0.75 = 24
+  end
+
+  def self.encrypt(key, data)
+    box = RbNaCl::SimpleBox.from_secret_key(key.force_encoding('BINARY'))
+    box.encrypt(data.force_encoding('BINARY'))
+  end
+
+  def self.decrypt(key, data)
+    box = RbNaCl::SimpleBox.from_secret_key(key.force_encoding('BINARY'))
+    box.decrypt(data.force_encoding('BINARY'))
+  rescue RbNaCl::CryptoError
+    nil
+  end
+
+  def self.encrypt64(key, data)
+    Base64.encode64(encrypt(key, data))
+  end
+
+  def self.decrypt64(key, data)
+    decrypt(key, Base64.decode64(data))
+  end
+
+  def self.multi_decrypt(keys, data)
+    keys.each do |key|
+      d = decrypt(key, data)
+      return d if d
+    end
+    nil
+  end
+
+  def self.multi_decrypt64(keys, data)
+    keys.each do |key|
+      d = decrypt64(key, data)
+      return d if d
+    end
+    nil
   end
 end
