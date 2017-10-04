@@ -2,7 +2,7 @@
 
 Cryptr is a minimal encryption module that follows the standard of SimpleBox or AES-256-CBC.
 
-- SimpleBox: is recommended, and it handles multi_decrypyt gracefully._
+- SimpleBox: is recommended, and it handles multi_decrypyt gracefully.
 - AES-256-CRC: A random iv is generated each time and prepended to the encrypted message.
 
 ## Installation
