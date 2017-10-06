@@ -15,7 +15,7 @@ module Cryptr
   # encrypts data with the given key. returns a binary data with the
   # unhashed random iv in the first 16 bytes
   def self.encrypt(key, data)
-    cipher = OpenSSL::Cipher::Cipher.new(ENCRYPTION_METHOD)
+    cipher = OpenSSL::Cipher.new(ENCRYPTION_METHOD)
     cipher.encrypt
     cipher.key = key = OpenSSL::Digest::SHA256.digest(key)
     random_iv = cipher.random_iv
@@ -26,7 +26,7 @@ module Cryptr
   end
 
   def self.decrypt(key, data) # rubocop:disable Metrics/MethodLength
-    cipher = OpenSSL::Cipher::Cipher.new(ENCRYPTION_METHOD)
+    cipher = OpenSSL::Cipher.new(ENCRYPTION_METHOD)
     cipher.decrypt
     cipher.key = cipher_key = OpenSSL::Digest::SHA256.digest(key)
     random_iv = data[0...IV_LENGTH]
