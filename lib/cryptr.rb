@@ -73,13 +73,13 @@ module SimpleboxCryptr
   end
 
   def self.encrypt(key, data)
-    box = RbNaCl::SimpleBox.from_secret_key(key.clone.force_encoding('BINARY'))
-    box.encrypt(data.clone.force_encoding('BINARY'))
+    box = RbNaCl::SimpleBox.from_secret_key(key.dup.force_encoding('BINARY'))
+    box.encrypt(data.dup.force_encoding('BINARY'))
   end
 
   def self.decrypt(key, data)
-    box = RbNaCl::SimpleBox.from_secret_key(key.clone.force_encoding('BINARY'))
-    box.decrypt(data.clone.force_encoding('BINARY'))
+    box = RbNaCl::SimpleBox.from_secret_key(key.dup.force_encoding('BINARY'))
+    box.decrypt(data.dup.force_encoding('BINARY'))
   rescue RbNaCl::CryptoError
     nil
   end
