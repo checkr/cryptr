@@ -7,6 +7,16 @@ Cryptr is a minimal encryption module that follows the standard of SimpleBox or 
 
 ## Installation
 
+Install libsodium first.
+
+```
+# Linux/Ubuntu
+apt-get install -y libsodium-dev
+
+# Mac
+brew install libsodium
+```
+
 Add this line to your application's Gemfile:
 
 ```ruby

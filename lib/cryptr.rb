@@ -1,6 +1,5 @@
 require 'base64'
 require 'openssl'
-require 'rbnacl/libsodium'
 require 'rbnacl'
 require 'securerandom'
 
