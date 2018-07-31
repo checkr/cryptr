@@ -7,7 +7,7 @@ Cryptr is a minimal encryption module that follows the standard of SimpleBox or 
 
 ## Installation
 
-Install libsodium first.
+It requires the installaztion of libsodium first.
 
 ```
 # Linux/Ubuntu
